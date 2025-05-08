@@ -1,0 +1,157 @@
+html {
+    width: 100vw;
+    height: 100vh;
+}
+
+body {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    background: lightblue url("assets/image/background.jpeg") no-repeat fixed center;
+}
+
+.carousel-container {
+
+    height: 440px;
+    position: relative;
+    display: flex;
+    width: 100%;
+    max-width: 20rem;
+    border: 15px solid black;
+
+}
+
+.button-container {
+    z-index: 1;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.nextButton,
+.prevButton {
+
+    cursor: pointer;
+    border: none;
+    background: hsla(0, 0%, 0%, 0.4);
+    color: #ffd700;
+
+    font-size: 20px;
+    /* transform: translateX(255px); */
+}
+
+.nextButton:hover {
+    background: hsla(0, 0%, 0%, 0.5);
+    color: aliceblue;
+}
+
+
+#image-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    /* display: flex; */
+}
+
+/* .image-slide {
+    width: 500px;
+    height: 600px; */
+/* display: none; */
+/* animation: slide 1s forwards; */
+/* visibility: hidden; */
+/* } */
+
+img {
+    width: inherit;
+    height: inherit;
+    z-index: -1;
+
+}
+
+.slide {
+    animation: slideNext 1s forwards;
+}
+
+@keyframes slideNext {
+    0% {
+        opacity: .4;
+    }
+
+    100% {
+        opacity: 1;
+    }
+
+
+}
+
+@font-face {
+    font-family: orbitron-black;
+    src: url(assets/font/Orbitron-Black.ttf);
+}
+
+@font-face {
+    font-family: orbitron-bold;
+    src: url(assets/font/Orbitron-Bold.ttf);
+}
+
+@font-face {
+    font-family: orbitron-extrabold;
+    src: url(assets/font/Orbitron-ExtraBold.ttf);
+}
+
+@font-face {
+    font-family: orbitron-medium;
+    src: url(assets/font/Orbitron-Medium.ttf);
+}
+
+@font-face {
+    font-family: orbitron-regular;
+    src: url(assets/font/Orbitron-Regular.ttf);
+}
+
+@font-face {
+    font-family: orbitron-semibold;
+    src: url(assets/font/Orbitron-SemiBold.ttf);
+}
+
+* {
+    font-family: orbitron-black;
+}
+
+
+.primary-btn {
+    background: green;
+    color: white;
+    width: 20px;
+    height: 20px;
+}
+
+.secondary-btn {
+    background: green;
+    color: white;
+    width: 20px;
+    height: 20px;
+}
+
+.tertiary-btn {
+    background: green;
+    color: white;
+    width: 20px;
+    height: 20px;
+}
+
+button {
+    border: 1px solid gray;
+    padding: 10px;
+    font-size: 24px;
+    width: auto;
+    height: auto;
+    color: black;
+    background-color: #FFD700;
+}
