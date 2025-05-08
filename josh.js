@@ -53,7 +53,7 @@ let progress = 1
 let stage1 = true
 let horLeft = true
 let initialLeft = 25
-let initialTop = 153
+let initialTop = 25
 
 const playProgress = () => {
     const playButton = document.getElementById("play-btn")
