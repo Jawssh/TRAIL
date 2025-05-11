@@ -1,4 +1,4 @@
-let progress = 1
+
 // const progressLength = [1, 2]
 
 // const progressbarContainer = document.getElementById("progress-container")
@@ -49,7 +49,7 @@ let progress = 1
 // }
 
 
-
+let progress = 1
 let stage1 = true
 let horLeft = true
 let initialLeft = 25
@@ -145,6 +145,29 @@ const playProgress = () => {
 
 
 }
+const headPopup = () => {
+    const charHead = document.getElementsByClassName("char-head");
+
+    const keyframes = `
+    @keyframes headIntroPopup {
+        0% {
+            transform: scale(0);
+        }
+        100% {
+            transform: scale(1);
+        }
+    }
+    `;
+
+    const style = document.createElement("style");
+    style.textContent = keyframes;
+    document.head.appendChild(style);
+
+
+    // Apply the intro popup animation
+    charHead[0].style.animation = "headIntroPopup 1s ease-out";
+};
+
 
 
 

@@ -11,6 +11,7 @@ body {
     flex-direction: column;
     align-items: center;
     background: lightblue url("assets/image/background.jpeg") no-repeat fixed center;
+    font-family: orbitron-bold;
 }
 
 .progress-container {
@@ -109,7 +110,7 @@ img {
     }
 
     100% {
-        height: 200px;
+        height: 220px;
     }
 }
 
@@ -227,6 +228,7 @@ img {
 }
 
 .container-4 {
+    margin-top: 25px;
     padding-left: 45px;
     display: flex;
     flex-direction: column;
@@ -234,6 +236,7 @@ img {
     align-items: center;
     height: 270px;
     width: 10%;
+
 }
 
 
@@ -244,7 +247,7 @@ img {
     align-items: center;
     right: 0px;
     width: 5px;
-    height: 200px;
+    height: 220px;
     background: black;
 
 }
@@ -263,7 +266,7 @@ img {
     justify-content: center;
     align-items: start;
     width: 100%;
-    height: 70px;
+    height: 40px;
 
 
 }
@@ -283,7 +286,7 @@ img {
     flex-direction: row;
     justify-content: start;
     align-items: center;
-    width: 200px;
+    width: 188px;
     height: 5px;
     background: black;
 }
@@ -294,12 +297,14 @@ img {
 }
 
 .path-5-indicator {
+    background-color: gold;
+    border-radius: 50%;
     display: flex;
     flex-direction: row;
     justify-content: center;
     align-items: center;
     width: 100px;
-    height: 40px;
+    height: 100px;
     border: none;
 }
 
@@ -317,4 +322,38 @@ img {
         background: #55b776;
         border: 2px solid black;
     }
+}
+
+@font-face {
+    font-family: orbitron-black;
+    src: url(assets/font/Orbitron-Black.ttf);
+}
+
+@font-face {
+    font-family: orbitron-bold;
+    src: url(assets/font/Orbitron-Bold.ttf);
+}
+
+@font-face {
+    font-family: orbitron-extrabold;
+    src: url(assets/font/Orbitron-ExtraBold.ttf);
+}
+
+@font-face {
+    font-family: orbitron-medium;
+    src: url(assets/font/Orbitron-Medium.ttf);
+}
+
+@font-face {
+    font-family: orbitron-regular;
+    src: url(assets/font/Orbitron-Regular.ttf);
+}
+
+@font-face {
+    font-family: orbitron-semibold;
+    src: url(assets/font/Orbitron-SemiBold.ttf);
+}
+
+* {
+    font-family: orbitron-black;
 }
