@@ -52,8 +52,8 @@
 let progress = 1
 let stage1 = true
 let horLeft = true
-let initialLeft = 25
-let initialTop = 25
+let initialLeft = 15
+let initialTop = 150
 
 const playProgress = () => {
     const playButton = document.getElementById("play-btn")
@@ -121,7 +121,7 @@ const playProgress = () => {
                         }
 
                         100% {
-                            left: ${initialLeft - 270}px;
+                            left: ${initialLeft - 275}px;
                         }
                     }
             `;
@@ -132,7 +132,7 @@ const playProgress = () => {
                 document.head.appendChild(style);
                 charHead[0].style.top = `${initialTop}px`
                 horLeft = true
-                initialLeft -= 270
+                initialLeft -= 275
             }
 
         }
