@@ -1,0 +1,82 @@
+body,
+html {
+    background: url('../assets/image/pantihan-falls.jpg') no-repeat center center/cover;
+}
+
+.introduce-content {
+  visibility: hidden;
+}
+
+.placename-container {
+  font-size: 24px;
+  white-space: nowrap;
+  overflow: hidden;
+  border-right: 2px solid black;
+  display: inline-block;
+  animation: typing 4s steps(15) forwards, blink 0.7s linear infinite;
+  font-weight: 900;
+  color: white;
+}
+
+@keyframes typing {
+  from {
+    width: 0;
+  }
+  to {
+    width: 14ch; /* 23 characters: "BONIFACIO TRAIL HOUSE" */
+  }
+}
+
+@keyframes blink {
+  0%, 100% {
+    border-color: black;
+  }
+  50% {
+    border-color: transparent;
+  }
+}
+
+.emman-container {
+  position: relative;
+}
+
+#emman-img {
+  opacity: 1;
+  position: relative;
+  left: 0;
+  bottom: 0;
+  transform: scaleX(-1);
+}
+
+#mouth {
+  width: 18px;
+  height: 6px;
+  position: absolute;
+  border: 3px solid #393636;
+  border-top: none;
+  border-radius: 0 0 50px 50px;
+  top: 85px;
+  left: 57px;
+}
+
+.speaking {
+  background: red;
+  border-radius: 50%;
+  position: absolute;
+  top: 85px;
+  left: 57px;
+  animation: speaking 0.5s ease-in-out infinite alternate;
+}
+
+@keyframes speaking {
+  0% {
+    width: 18px;
+    height: 12px;
+    border-radius: 50%;
+  }
+  100% {
+    width: 18px;
+    height: 6px;
+    border-radius: 5px;
+  }
+}

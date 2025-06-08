@@ -1,0 +1,114 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background: url('../assets/image/border.jpg');
+  width: 45vh;
+  height: 30vh;
+}
+
+.content-container {
+  width: 97%;
+  height: 95%;
+  background: #ffe4c4;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  flex-direction: column;
+}
+
+p{
+  padding: 6px;
+}
+
+#emman-img{
+  width: 122px;
+  height: 254px;
+  position: absolute;
+  right: 10px;
+  bottom: 2rem;
+  opacity: 0;
+}
+
+.dialog-container{
+  height: 100%;
+  width: 100%;
+}
+
+.introduce-content {
+  visibility: hidden;
+}
+
+.placename-container {
+  white-space: nowrap;
+  overflow: hidden;
+  border-right: 2px solid black; /* cursor effect */
+  max-width: 5ch;
+  animation: typing 1.5s steps(4), blink 0.5s step-end infinite alternate;
+  font-size: 24px;
+  color: white;
+  margin-top: 24px;
+  font-weight: 900;
+}
+@keyframes typing {
+  from {
+    width: 0;
+  }
+  to {
+    width: 5ch;
+  }
+}
+
+@keyframes blink {
+  from {
+    border-color: black;
+  }
+  to {
+    border-color: transparent;
+  }
+}
+.emman-container {
+  position: relative;
+}
+
+#emman-img {
+  opacity: 1;
+  position: relative;
+  left: 0;
+  bottom: 0;
+  transform: scaleX(-1);
+}
+
+#mouth {
+  width: 18px;
+  height: 6px;
+  position: absolute;
+  border: 3px solid #393636;
+  border-top: none;
+  border-radius: 0 0 50px 50px;
+  top: 85px;
+  left: 57px;
+}
+
+.speaking {
+  background: red;
+  border-radius: 50%;
+  position: absolute;
+  top: 85px;
+  left: 57px;
+  animation: speaking 0.5s ease-in-out infinite alternate;
+}
+
+@keyframes speaking {
+  0% {
+    width: 18px;
+    height: 12px;
+    border-radius: 50%;
+  }
+  100% {
+    width: 18px;
+    height: 6px;
+    border-radius: 5px;
+  }
+}
