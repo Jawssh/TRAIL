@@ -56,7 +56,7 @@ body {
   justify-content: center;
   font-weight: 600;
   background: white;
-  z-index: 2;
+  position: relative;
 }
 
 img {
@@ -87,7 +87,7 @@ img {
   }
 
   100% {
-    width: 200px;
+    width: 160px;
   }
 }
 
@@ -115,13 +115,13 @@ img {
   flex-direction: row;
   justify-content: start;
   align-items: center;
-  width: 200px;
+  width: 160px;
   height: 5px;
   background: black;
 }
 
 #progress-bar-1 {
-  width: 200px;
+  width: 160px;
   height: 10px;
 }
 
@@ -133,11 +133,11 @@ img {
   justify-content: center;
   align-items: end;
   width: 100%;
-  height: 200px;
+  height: 160px;
 }
 
 .container-2 {
-  padding-right: 40px;
+  padding-right: 33px;
   display: flex;
   flex-direction: column;
   justify-content: start;
@@ -153,13 +153,13 @@ img {
   align-items: center;
   right: 0px;
   width: 5px;
-  height: 200px;
+  height: 160px;
   background: black;
 }
 
 #progress-bar-2 {
   width: 10px;
-  height: 200px;
+  height: 160px;
 }
 
 /* path 3 */
@@ -186,13 +186,13 @@ img {
   flex-direction: row;
   justify-content: end;
   align-items: center;
-  width: 200px;
+  width: 160px;
   height: 5px;
   background: black;
 }
 
 #progress-bar-3 {
-  width: 200px;
+  width: 160px;
   height: 10px;
 }
 
@@ -204,7 +204,7 @@ img {
   justify-content: center;
   align-items: start;
   width: 100%;
-  height: 200px;
+  height: 160px;
 }
 
 .container-4 {
@@ -242,7 +242,7 @@ img {
   justify-content: center;
   align-items: start;
   width: 100%;
-  height: 40px;
+  height: auto;
 }
 
 .container-5 {
@@ -259,13 +259,13 @@ img {
   flex-direction: row;
   justify-content: start;
   align-items: center;
-  width: 180px;
+  width: 160px;
   height: 5px;
   background: black;
 }
 
 #progress-bar-5 {
-  width: 200px;
+  width: 160px;
   height: 10px;
 }
 
@@ -276,9 +276,58 @@ img {
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  width: 100px;
-  height: 100px;
+  width: 70px;
+  height: 70px;
   border: none;
+}
+
+/* path 6 */
+
+.path-6-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: end;
+  width: 100%;
+  height: 160px;
+}
+
+.container-6 {
+  padding-right: 23px;
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  align-items: center;
+  height: 270px;
+  width: 10%;
+}
+
+.path-6 {
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  align-items: center;
+  right: 0px;
+  width: 5px;
+  height: 160px;
+  background: black;
+}
+
+#progress-bar-6 {
+  width: 10px;
+  height: 160px;
+}
+
+.path-7-container {
+  display: flex;
+  width: 100%;
+  justify-content: end;
+}
+
+#indicator-color-7 {
+  background-color: gold;
+  width: 85px;
+  height: 85px;
 }
 
 .success-indicator {
@@ -348,5 +397,5 @@ img {
 
 .progress-succeed {
   background: #55b776;
-  width: 200px;
+  width: 160px;
 }

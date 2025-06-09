@@ -51,7 +51,7 @@ let progress = Number(localStorage.getItem("progress")) || 1;
 let stage1 = true;
 let horLeft = localStorage.getItem("horLeft") || "true";
 let initialLeft = Number(localStorage.getItem("left")) || 10;
-let initialTop = Number(localStorage.getItem("top")) || 120;
+let initialTop = Number(localStorage.getItem("top")) || 30;
 
 setTimeout(() => {
   playProgress();
@@ -67,7 +67,7 @@ for (let index = 1; index < progress; index++) {
 const playProgress = () => {
   console.log("horLeft: ", horLeft)
   const charHead = document.getElementsByClassName("char-head");
-  if (progress <= 5) {
+  if (progress <= 6) {
     const progressBar = document.getElementById("progress-bar-" + progress);
     const indicator = document.getElementById(`indicator-color-${progress}`);
     if (progress % 2 === 0) {
@@ -81,7 +81,7 @@ const playProgress = () => {
                         }
 
                         100% {
-                            top: ${initialTop + 272}px;
+                            top: ${initialTop + 234}px;
                         }
                     }
             `;
@@ -92,7 +92,7 @@ const playProgress = () => {
       document.head.appendChild(style);
       charHead[0].style.left = `${initialLeft}px`;
 
-      initialTop = initialTop + 272;
+      initialTop = initialTop + 234;
       charHead[0].classList.add("head-move-ver");
     } else {
       charHead[0].classList.remove("head-move-ver");
@@ -107,7 +107,7 @@ const playProgress = () => {
                         }
 
                         100% {
-                            left: ${initialLeft + 270}px;
+                            left: ${initialLeft + 230}px;
                         }
                     }
             `;
@@ -118,7 +118,7 @@ const playProgress = () => {
         document.head.appendChild(style);
         charHead[0].style.top = `${initialTop}px`;
         horLeft = false;
-        initialLeft += 270;
+        initialLeft += 230;
       } else {
         // Define keyframes
         const keyframes = `
@@ -128,7 +128,7 @@ const playProgress = () => {
                         }
 
                         100% {
-                            left: ${initialLeft - 275}px;
+                            left: ${initialLeft - 230}px;
                         }
                     }
             `;
@@ -139,7 +139,7 @@ const playProgress = () => {
         document.head.appendChild(style);
         charHead[0].style.top = `${initialTop}px`;
         horLeft = true;
-        initialLeft -= 275;
+        initialLeft -= 230;
         console.log("her")
       }
     }
@@ -147,17 +147,17 @@ const playProgress = () => {
     indicator.classList.add("success-indicator");
     progress++;
 
-    console.log("initialLeft: ", initialLeft)
-    localStorage.setItem("left", initialLeft);
-    console.log("initialTop: ", initialTop)
-    localStorage.setItem("top", initialTop);
-    localStorage.setItem("progress", progress);
-    localStorage.setItem("horLeft", horLeft)
+    // localStorage.setItem("left", initialLeft);
+    // localStorage.setItem("top", initialTop);
+    // localStorage.setItem("progress", progress);
+    // localStorage.setItem("horLeft", horLeft)
     
     setTimeout(() => {
-      location.href = PROGRESS_DATA[progress]
+      // location.href = PROGRESS_DATA[progress]
     }, 3500);
 
+  }else{
+    location.href = '/html/final.html'
   }
 
   // 

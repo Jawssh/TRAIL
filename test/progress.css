@@ -1,0 +1,110 @@
+body {
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background: lightblue url("../assets/image/background.jpg") center/cover no-repeat;
+  font-family: orbitron-bold;
+}
+
+.progress-container {
+  width: 100%;
+  overflow-x: auto;
+  padding: 1rem;
+  display: flex;
+  justify-content: center;
+}
+
+.progress-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  position: relative;
+  width: max-content;
+}
+
+.indicator-color,
+.indicator-succeed {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  background: white;
+  border: 2px solid black;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: 600;
+  text-align: center;
+}
+
+.path {
+  width: 160px;
+  height: 5px;
+  background: black;
+  position: relative;
+}
+
+.progress-succeed,
+.play-progress-hor {
+  height: 10px;
+  background: #55b776;
+  animation: playProgressBar-hor 2s forwards;
+}
+
+@keyframes playProgressBar-hor {
+  0% {
+    width: 0;
+  }
+  100% {
+    width: 100%;
+  }
+}
+
+.success-indicator {
+  background: #55b776;
+  color: white;
+  border: 2px solid black;
+}
+
+img.char-head {
+  width: 90px;
+  position: absolute;
+  z-index: 2;
+  transition: transform 0.3s;
+}
+
+@media (max-width: 768px) {
+  .indicator-color,
+  .indicator-succeed {
+    width: 50px;
+    height: 50px;
+    font-size: 0.75rem;
+  }
+
+  .path {
+    width: 100px;
+  }
+
+  img.char-head {
+    width: 60px;
+  }
+}
+
+@media (max-width: 480px) {
+  .indicator-color,
+  .indicator-succeed {
+    width: 40px;
+    height: 40px;
+    font-size: 0.65rem;
+  }
+
+  .path {
+    width: 80px;
+  }
+
+  img.char-head {
+    width: 50px;
+  }
+}
