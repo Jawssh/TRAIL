@@ -52,7 +52,7 @@ p {
   overflow: hidden;
   border-right: 2px solid black; /* cursor effect */
   max-width: 5ch;
-  animation: typing 2s steps(4), blink 0.3s step-end infinite alternate;
+  animation: typing 2s steps(4), blink 0.5s step-end infinite alternate;
   font-size: 24px;
   color: white;
   margin-top: 24px;
@@ -126,6 +126,8 @@ p {
   flex-direction: column;
   justify-content: space-evenly;
   margin: 6px;
+  width: 100%;
+  overflow: scroll;
 }
 
 .question {
@@ -160,4 +162,18 @@ p {
   100% {
     opacity: 1;
   }
+}
+
+.question .answer-input{
+  font-size: 16px;
+  width: 55px;
+}
+
+.illustration-container img{
+  object-fit: contain;
+    max-width: 100%;
+}
+
+button.answer-submit{
+  margin-bottom: 12px;
 }

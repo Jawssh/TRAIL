@@ -3,20 +3,10 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Responsive Progress Bar</title>
+    <title>TRAIL</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-      tailwind.config = {
-        theme: {
-          extend: {
-            fontFamily: {
-              sans: ["Inter", "sans-serif"],
-            },
-          },
-        },
-      };
-    </script>
+    <link rel="stylesheet" href="../css/main.css" />
     <style>
       /* Custom styles for the progress line */
       .progress-line {
@@ -138,9 +128,9 @@
     class="bg-gray-100 flex items-center justify-center min-h-screen p-4 font-sans"
   >
     <div class="bg-white p-6 md:p-8 rounded-xl shadow-lg w-full max-w-4xl">
-      <h1 class="text-2xl font-bold text-gray-800 mb-6 text-center">
+      <h3 class="text-2xl font-bold text-gray-800 mb-6 text-center">
         Your Progress Journey
-      </h1>
+      </h3>
 
       <div
         id="progressBar"
@@ -222,12 +212,19 @@
 
           // Reset classes
           circle.classList.remove("completed", "active");
-
-          if (stageNumber < currentStage) {
+          console.log(stageNumber, currentStage)
+          if (stageNumber < currentStage || currentStage === 7) {
             circle.classList.add("completed");
+            if(currentStage === 7){
+              setTimeout(() => {
+              circle.scrollIntoView({ behavior: "smooth", block: "center", inline: "nearest"});
+            }, 100);
+            }
           } else if (stageNumber === currentStage) {
             circle.classList.add("active");
-            circle.scrollIntoView({ behavior: "smooth" });
+            setTimeout(() => {
+              circle.scrollIntoView({ behavior: "smooth", block: "center", inline: "nearest"});
+            }, 100);
           }
         });
 

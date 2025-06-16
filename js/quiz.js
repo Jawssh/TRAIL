@@ -1,11 +1,59 @@
 let dialogNumber = 0;
 let currentQuizNum = 0;
 let hasWrongAns = 0;
+
 const savedStage = Number(localStorage.getItem("progressBarStage")) || 1;
 const CORRECT_DIALOG = [
-  "Excellent work! You can now proceed to your next goal!",
-  "Good job! I knew you could do this!",
-  "You’re good at this!",
+  "",
+  {
+    dialogs: [
+      "Excellent work! You can now proceed to your next goal!",
+      "Good job! I knew you could do this!",
+      "You’re good at this!",
+    ],
+  },
+  {
+    dialogs: [
+      "You nailed it! You can move on to the next challenge.",
+      "Wow, you are good at this!",
+      "Amazing work!",
+    ],
+  },
+  {
+    dialogs: [
+      "Well done! Your progress is impressive. You may now proceed to the next question.",
+      "Great job, please proceed to the last question.",
+      "Amazing work, I’m proud of you!",
+    ],
+  },
+  {
+    dialogs: [
+      "Impressive! On to the next challenge!",
+      "Wow, that’s nice!",
+      "I knew you could do it!",
+    ],
+  },
+  {
+    dialogs: [
+      "You got it! You may proceed to the next round!",
+      "Wow, that’s nice!",
+      "Impressive work!",
+    ],
+  },
+  {
+    dialogs: [
+      "Excellent work! You can now proceed to the next destination. Good luck!",
+      "Excellent work! You can now proceed to the next destination. Good luck!",
+      "Excellent work! You can now proceed to the next destination. Good luck!",
+    ],
+  },
+  {
+    dialogs: [
+      "You did it, great job! ",
+      "You did it, great job! ",
+      "You did it, great job! ",
+    ],
+  },
 ];
 
 const contentContainer =
@@ -16,7 +64,6 @@ const bodyEl = document.getElementsByTagName("html")[0];
 
 const mainEl = document.getElementById("main-container");
 const modalContainer = document.getElementsByClassName("modal-container")[0];
-
 
 const currentStage = localStorage.getItem("currentStage") || "bonifacio";
 
@@ -83,7 +130,7 @@ const insertDialogMessage = () => {
         bodyEl.style.backgroundSize = "cover";
 
         setTimeout(() => {
-            location.href="/test/progress.html"
+          location.href = "/test/progress.html";
         }, 3000);
       }, 2500);
     } else if (QUIZ_DIALOG[dialogNumber] === "start_quiz") {
@@ -96,8 +143,11 @@ const insertDialogMessage = () => {
       emman.style.display = "none";
       placename.style.display = "none";
       container.style.height = "100vh";
+      // container.style.overflow = "scroll";
       const quizType = QUIZ_TYPE[savedStage];
-      quiz(quizType);
+      const mouthEl = document.getElementById("mouth");
+      mouthEl.style.display = "none";
+      startQuiz(quizType);
     } else {
       contentContainer.innerHTML = `
         <div class="dialog-container space-between">
@@ -128,9 +178,17 @@ const stopSpeaking = () => {
   mouthEl.classList.remove("speaking");
 };
 
-const quiz = (type) => {
+const startQuiz = (type) => {
   if (type === "matching_type") {
     matchingTypeQuiz(QUIZES[savedStage]);
+  } else if (type === "fill_blanks") {
+    fillBlanksTypeQuiz(QUIZES[savedStage]);
+  } else if (type === "matching_type_with_images") {
+    matchingTypeWithImages(QUIZES[savedStage]);
+  } else if (type === "multiple_choices") {
+    multipleChoicesQuiz(QUIZES[savedStage]);
+  } else {
+    console.log("No matched quiz type found");
   }
 };
 
@@ -142,7 +200,7 @@ const submitMatchingType = () => {
   console.log("randomNum: ", randomNum);
   if (answer === correctAns) {
     console.log("correct");
-    showModal(CORRECT_DIALOG[randomNum]);
+    showModal(CORRECT_DIALOG[savedStage].dialogs[randomNum]);
     currentQuizNum++;
     hasWrongAns = 0;
     if (currentQuizNum < QUIZES[savedStage].questions.length) {
@@ -175,11 +233,11 @@ const submitMatchingType = () => {
 const matchingTypeQuiz = (quiz) => {
   contentContainer.innerHTML = `
   <div class="matching-container">
-    <div class="instruction-container">${quiz.instruction}</div>
+    <div class="instruction-container"><p>${quiz.instruction}</p></div>
     <div class="choices-container"></div>
     <div class="question-container"></div>
   </div>
-  <button onclick="submitMatchingType()">SUBMIT</button>
+  <button onclick="submitMatchingType()" class="primary answer-submit">SUBMIT</button>
   `;
   const choicesContainer = contentContainer.querySelector(".choices-container");
   quiz.choices.forEach((choice) => {
@@ -206,10 +264,10 @@ const hideModal = () => {
 
 const backToLesson = () => {
   history.back();
-}
+};
 
 const showModal = (dialog, stop = false) => {
-  clearInterval()
+  clearInterval();
   mainEl.style.display = "none";
   modalContainer.innerHTML = `
     <h3 style="text-align: center">${dialog}</h3>
@@ -228,4 +286,276 @@ const showModal = (dialog, stop = false) => {
       hideModal();
     }, 1500);
   }
+};
+
+const submitFillBlanks = () => {
+  const answerInput = document.getElementsByClassName("answer-input");
+  const answerArr = Array.from(answerInput).map((answer) => answer.value);
+  const answer = answerArr.join(",");
+  const correctAns = QUIZES[savedStage].questions[currentQuizNum].answer;
+  const randomNum = Math.floor(Math.random() * 3);
+  if (answer === correctAns) {
+    console.log("correct");
+    showModal(CORRECT_DIALOG[savedStage].dialogs[randomNum]);
+    currentQuizNum++;
+    hasWrongAns = 0;
+    if (currentQuizNum < QUIZES[savedStage].questions.length) {
+      const questionContainer = contentContainer.querySelector(
+        ".question-container"
+      );
+      questionContainer.innerHTML = `
+          <div class="question">
+            <p>${QUIZES[savedStage].questions[currentQuizNum].question}</p>
+            <input type="text" id="answer-input"/>
+          </div>
+        `;
+    } else {
+      //open gate
+      console.log("open gate");
+      dialogNumber++;
+      insertDialogMessage();
+    }
+  } else {
+    console.log("wrong");
+    hasWrongAns++;
+    if (hasWrongAns > 1) {
+      showModal("Do you want to review the lesson again?", true);
+    } else {
+      showModal("Try again!");
+    }
+  }
+};
+
+const fillBlanksTypeQuiz = (quiz) => {
+  contentContainer.innerHTML = `
+  <div class="matching-container">
+    <div class="instruction-container"><p>${quiz.instruction}</p></div>
+    <div class="illustration-container"></div>
+    <div class="question-container"></div>
+  </div>
+  <button onclick="submitFillBlanks()" class="primary answer-submit">SUBMIT</button>
+  `;
+  const illustrationContainer = contentContainer.querySelector(
+    ".illustration-container"
+  );
+  illustrationContainer.innerHTML += `
+      <img src="${quiz.image}"/>
+    `;
+
+  const questionContainer = contentContainer.querySelector(
+    ".question-container"
+  );
+  questionContainer.innerHTML += `
+      <div class="question">
+        <p>${quiz.questions[currentQuizNum].question}</p>
+      </div>
+    `;
+};
+
+const submitMatchingWithImages = () => {
+  let answer, correctAns;
+  if (QUIZES[savedStage].questions[currentQuizNum].hasMultipleAnswer) {
+    const answerInput = document.getElementsByClassName("answer-input");
+    const answerArr = Array.from(answerInput).map((answer) => answer.value);
+    answer = answerArr.join(",");
+  } else {
+    const answerInput = document.getElementById("answer-input");
+    answer = answerInput.value.toLowerCase();
+  }
+  correctAns = QUIZES[savedStage].questions[currentQuizNum].answer;
+  const randomNum = Math.floor(Math.random() * 3);
+  console.log("randomNum: ", randomNum);
+  if (answer === correctAns) {
+    console.log("correct");
+    showModal(CORRECT_DIALOG[savedStage].dialogs[randomNum]);
+    currentQuizNum++;
+    hasWrongAns = 0;
+    const nextQuiz = QUIZES[savedStage].questions[currentQuizNum];
+    if (currentQuizNum < QUIZES[savedStage].questions.length) {
+      if (nextQuiz.hasMultipleAnswer) {
+        contentContainer.innerHTML = `
+          <div class="matching-container">
+            <div class="instruction-container"><p>${nextQuiz.instruction}</p></div>
+            <div class="illustration-container"></div>
+            <div class="question-container"></div>
+          </div>
+          <button onclick="submitMatchingWithImages()" class="primary answer-submit">SUBMIT</button>
+        `;
+        const illustrationContainer = contentContainer.querySelector(
+          ".illustration-container"
+        );
+        illustrationContainer.innerHTML += `
+            <img src="${nextQuiz.image}"/>
+          `;
+
+        const questionContainer = contentContainer.querySelector(
+          ".question-container"
+        );
+        questionContainer.innerHTML += `
+            <div class="question">
+              <p>${nextQuiz.question}</p>
+            </div>
+          `;
+      } else if (QUIZES[savedStage].questions[currentQuizNum].image) {
+        contentContainer.innerHTML = `
+          <div class="matching-container">
+            <div class="instruction-container"><p>${nextQuiz.instruction}</p></div>
+            <div class="illustration-container"></div>
+            <div class="question-container"></div>
+          </div>
+          <button onclick="submitMatchingWithImages()" class="primary answer-submit">SUBMIT</button>
+        `;
+        const illustrationContainer = contentContainer.querySelector(
+          ".illustration-container"
+        );
+        illustrationContainer.innerHTML += `
+            <img src="${nextQuiz.image}"/>
+          `;
+        const questionContainer = contentContainer.querySelector(
+          ".question-container"
+        );
+        if (QUIZES[savedStage].questions[currentQuizNum].question) {
+          questionContainer.innerHTML += `
+              <div class="question">
+                <p>${nextQuiz.question}</p>
+                <input type="text" id="answer-input"/>
+              </div>
+            `;
+        } else {
+          questionContainer.innerHTML += `
+              <div class="question">
+                <input type="text" id="answer-input"/>
+              </div>
+            `;
+        }
+      } else {
+        const questionContainer = contentContainer.querySelector(
+          ".question-container"
+        );
+        questionContainer.innerHTML = `
+            <div class="question">
+              <p>${QUIZES[savedStage].questions[currentQuizNum].question}</p>
+              <input type="text" id="answer-input"/>
+            </div>
+          `;
+      }
+    } else {
+      //open gate
+      console.log("open gate");
+      dialogNumber++;
+      insertDialogMessage();
+    }
+  } else {
+    console.log("wrong");
+    hasWrongAns++;
+    if (hasWrongAns > 1) {
+      showModal("Do you want to review the lesson again?", true);
+    } else {
+      showModal("Try again!");
+    }
+  }
+};
+
+const matchingTypeWithImages = (quiz) => {
+  contentContainer.innerHTML = `
+  <div class="matching-container">
+    <div class="instruction-container"><p>${quiz.questions[currentQuizNum].instruction}</p></div>
+    <div class="choices-container"></div>
+    <div class="question-container"></div>
+  </div>
+  <button onclick="submitMatchingWithImages()" class="primary answer-submit">SUBMIT</button>
+  `;
+  const choicesContainer = contentContainer.querySelector(".choices-container");
+  quiz.questions[currentQuizNum].choices.forEach((choice) => {
+    choicesContainer.innerHTML += `
+      <p>${choice}</p>
+    `;
+  });
+
+  const questionContainer = contentContainer.querySelector(
+    ".question-container"
+  );
+  questionContainer.innerHTML += `
+      <div class="question">
+        <p>${quiz.questions[currentQuizNum].question}</p>
+        <input type="text" id="answer-input"/>
+      </div>
+    `;
+};
+
+const submitMultipleChoices = () => {
+  const answerInput = document.getElementById("answer-input");
+  const answer = answerInput.value.toLowerCase();
+  const correctAns = QUIZES[savedStage].questions[currentQuizNum].answer;
+  const randomNum = Math.floor(Math.random() * 3);
+  console.log("randomNum: ", randomNum);
+  if (answer === correctAns) {
+    console.log("correct");
+    showModal(CORRECT_DIALOG[savedStage].dialogs[randomNum]);
+    currentQuizNum++;
+    hasWrongAns = 0;
+    if (currentQuizNum < QUIZES[savedStage].questions.length) {
+      const choicesContainer =
+        contentContainer.querySelector(".choices-container");
+      choicesContainer.innerHTML = "";
+      const questionContainer = contentContainer.querySelector(
+        ".question-container"
+      );
+      questionContainer.innerHTML = `
+          <div class="question">
+            <p>${QUIZES[savedStage].questions[currentQuizNum].question}</p>
+            <input type="text" id="answer-input"/>
+          </div>
+        `;
+        
+      QUIZES[savedStage].questions[currentQuizNum].choices.forEach((choice) => {
+        choicesContainer.innerHTML += `
+          <p>${choice}</p>
+        `;
+      });
+
+      
+    } else {
+      //open gate
+      console.log("open gate");
+      dialogNumber++;
+      insertDialogMessage();
+    }
+  } else {
+    console.log("wrong");
+    hasWrongAns++;
+    if (hasWrongAns > 1) {
+      showModal("Do you want to review the lesson again?", true);
+    } else {
+      showModal("Try again!");
+    }
+  }
+};
+
+const multipleChoicesQuiz = (quiz) => {
+  console.log(quiz);
+  contentContainer.innerHTML = `
+  <div class="matching-container">
+    <div class="instruction-container"><p>${quiz.instruction}</p></div>
+    <div class="question-container"></div>
+    <div class="choices-container"></div>
+  </div>
+  <button onclick="submitMultipleChoices()" class="primary answer-submit">SUBMIT</button>
+  `;
+  const choicesContainer = contentContainer.querySelector(".choices-container");
+  quiz.questions[currentQuizNum].choices.forEach((choice) => {
+    choicesContainer.innerHTML += `
+      <p>${choice}</p>
+    `;
+  });
+
+  const questionContainer = contentContainer.querySelector(
+    ".question-container"
+  );
+  questionContainer.innerHTML += `
+      <div class="question">
+        <p>${quiz.questions[currentQuizNum].question}</p>
+        <input type="text" id="answer-input"/>
+      </div>
+    `;
 };
