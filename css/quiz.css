@@ -1,9 +1,16 @@
+body {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  justify-content: center;
+}
+
 .container {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  background: url('../assets/image/border.jpg');
+  background: url("../assets/image/border.jpg");
   width: 45vh;
   height: 30vh;
 }
@@ -18,11 +25,11 @@
   flex-direction: column;
 }
 
-p{
+p {
   padding: 6px;
 }
 
-#emman-img{
+#emman-img {
   width: 122px;
   height: 254px;
   position: absolute;
@@ -31,7 +38,7 @@ p{
   opacity: 0;
 }
 
-.dialog-container{
+.dialog-container {
   height: 100%;
   width: 100%;
 }
@@ -110,5 +117,47 @@ p{
     width: 18px;
     height: 6px;
     border-radius: 5px;
+  }
+}
+
+.matching-container {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  margin: 6px;
+}
+
+.question {
+  margin: 12px 0px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.modal-container {
+  display: none;
+  background-color: #ffe4c4;
+  border: 1px solid black;
+  height: 100px;
+  justify-content: center;
+  align-items: center;
+  width: 90vw;
+  margin: 12px;
+  flex-direction: column;
+  padding: 12px;
+}
+
+.modal-show{
+  animation: showModal 1s forwards;
+}
+
+@keyframes showModal {
+  0% {
+    opacity: 0.4;
+  }
+
+  100% {
+    opacity: 1;
   }
 }

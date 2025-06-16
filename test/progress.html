@@ -1,294 +1,318 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Responsive Progress Bar</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
-                    },
-                }
-            }
-        }
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ["Inter", "sans-serif"],
+            },
+          },
+        },
+      };
     </script>
     <style>
-        /* Custom styles for the progress line */
-        .progress-line {
-            height: 4px;
-            background-color: #e5e7eb; /* Light gray */
-            position: absolute;
-            top: 50%;
-            left: 0;
-            right: 0;
-            transform: translateY(-50%);
-            z-index: 0; /* Ensures it's behind the circles */
-            border-radius: 9999px; /* Fully rounded */
-        }
+      /* Custom styles for the progress line */
+      .progress-line {
+        height: 4px;
+        background-color: #e5e7eb; /* Light gray */
+        position: absolute;
+        top: 50%;
+        left: 0;
+        right: 0;
+        transform: translateY(-50%);
+        z-index: 0; /* Ensures it's behind the circles */
+        border-radius: 9999px; /* Fully rounded */
+      }
 
-        .progress-line-fill {
-            height: 100%;
-            background-color: #10B981; /* Green for completed progress */
-            width: 0%; /* Will be dynamically set by JS */
-            transition: width 3s ease-in-out; /* Changed from 0.5s to 3s */
-            border-radius: 9999px;
-        }
+      .progress-line-fill {
+        height: 100%;
+        background-color: #10b981; /* Green for completed progress */
+        width: 0%; /* Will be dynamically set by JS */
+        transition: width 3s ease-in-out; /* Changed from 0.5s to 3s */
+        border-radius: 9999px;
+      }
 
-        .stage-circle {
-            width: 40px;
-            height: 40px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 50%;
-            background-color: #e5e7eb; /* Default light gray */
-            color: #4b5563; /* Default dark gray text */
-            font-weight: bold;
-            flex-shrink: 0; /* Prevent shrinking */
-            position: relative; /* For z-index */
-            z-index: 10; /* Ensures it's above the line */
-            transition: background-color 3s ease-in-out, color 3s ease-in-out, border-color 3s ease-in-out; /* Changed from 0.3s to 3s */
-            border: 2px solid transparent; /* Default transparent border */
-        }
+      .stage-circle {
+        width: 40px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        background-color: #e5e7eb; /* Default light gray */
+        color: #4b5563; /* Default dark gray text */
+        font-weight: bold;
+        flex-shrink: 0; /* Prevent shrinking */
+        position: relative; /* For z-index */
+        z-index: 10; /* Ensures it's above the line */
+        transition: background-color 3s ease-in-out, color 3s ease-in-out,
+          border-color 3s ease-in-out; /* Changed from 0.3s to 3s */
+        border: 2px solid transparent; /* Default transparent border */
+      }
 
-        .stage-circle.completed {
-            background-color: #10B981; /* Green */
-            color: white;
-        }
+      .stage-circle.completed {
+        background-color: #10b981; /* Green */
+        color: white;
+      }
 
-        .stage-circle.active {
-            background-color: white;
-            color: #10B981; /* Green text */
-            border-color: #10B981; /* Green border */
-            box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.3); /* Green glow */
-        }
+      .stage-circle.active {
+        background-color: white;
+        color: #10b981; /* Green text */
+        border-color: #10b981; /* Green border */
+        box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.3); /* Green glow */
+      }
 
+      .stage-label {
+        position: absolute;
+        bottom: -28px; /* Adjust as needed */
+        left: 50%;
+        transform: translateX(-50%);
+        white-space: nowrap;
+        font-size: 0.875rem; /* text-sm */
+        color: #6b7280; /* Gray-500 */
+        width: max-content; /* Ensure label doesn't wrap too early */
+      }
+
+      .stage-circle.completed + .stage-label {
+        color: #10b981; /* Green text for completed stages */
+        font-weight: 500; /* Medium font weight */
+      }
+
+      .stage-circle.active + .stage-label {
+        color: #10b981; /* Green text for active stage */
+        font-weight: bold;
+      }
+
+      /* Adjustments for smaller screens (e.g., vertical layout) */
+      @media (max-width: 640px) {
+        .progress-container {
+          flex-direction: column;
+          align-items: flex-start;
+          padding: 1rem;
+        }
+        .progress-stage {
+          width: 100%;
+          margin-bottom: 2.5rem; /* More space between vertical stages */
+          position: relative;
+        }
+        .progress-stage:last-child {
+          margin-bottom: 0;
+        }
+        .stage-content {
+          flex-direction: row;
+          align-items: center;
+          gap: 0.75rem; /* Space between circle and label in vertical view */
+        }
         .stage-label {
-            position: absolute;
-            bottom: -28px; /* Adjust as needed */
-            left: 50%;
-            transform: translateX(-50%);
-            white-space: nowrap;
-            font-size: 0.875rem; /* text-sm */
-            color: #6b7280; /* Gray-500 */
-            width: max-content; /* Ensure label doesn't wrap too early */
+          position: static; /* Remove absolute positioning */
+          transform: none; /* Remove translation */
+          font-size: 1rem; /* Larger text for better readability */
         }
-
-        .stage-circle.completed + .stage-label {
-            color: #10B981; /* Green text for completed stages */
-            font-weight: 500; /* Medium font weight */
+        .progress-line {
+          width: 4px;
+          height: 100%;
+          left: 19px; /* Align with center of circle */
+          top: 0;
+          bottom: 0;
+          transform: none;
         }
-
-        .stage-circle.active + .stage-label {
-            color: #10B981; /* Green text for active stage */
-            font-weight: bold;
+        .progress-line-fill {
+          width: 100%; /* Fill vertically */
+          height: 0%; /* Will be dynamically set by JS */
+          transition: height 3s ease-in-out; /* Changed from 0.5s to 3s */
         }
-
-        /* Adjustments for smaller screens (e.g., vertical layout) */
-        @media (max-width: 640px) {
-            .progress-container {
-                flex-direction: column;
-                align-items: flex-start;
-                padding: 1rem;
-            }
-            .progress-stage {
-                width: 100%;
-                margin-bottom: 2.5rem; /* More space between vertical stages */
-                position: relative;
-            }
-            .progress-stage:last-child {
-                margin-bottom: 0;
-            }
-            .stage-content {
-                flex-direction: row;
-                align-items: center;
-                gap: 0.75rem; /* Space between circle and label in vertical view */
-            }
-            .stage-label {
-                position: static; /* Remove absolute positioning */
-                transform: none; /* Remove translation */
-                font-size: 1rem; /* Larger text for better readability */
-            }
-            .progress-line {
-                width: 4px;
-                height: 100%;
-                left: 19px; /* Align with center of circle */
-                top: 0;
-                bottom: 0;
-                transform: none;
-            }
-            .progress-line-fill {
-                width: 100%; /* Fill vertically */
-                height: 0%; /* Will be dynamically set by JS */
-                transition: height 3s ease-in-out; /* Changed from 0.5s to 3s */
-            }
-            .progress-stage:not(:last-child) .progress-line-fill {
-                height: 0%; /* Reset for vertical fill */
-            }
+        .progress-stage:not(:last-child) .progress-line-fill {
+          height: 0%; /* Reset for vertical fill */
         }
+      }
     </style>
-</head>
-<body class="bg-gray-100 flex items-center justify-center min-h-screen p-4 font-sans">
+  </head>
+  <body
+    class="bg-gray-100 flex items-center justify-center min-h-screen p-4 font-sans"
+  >
     <div class="bg-white p-6 md:p-8 rounded-xl shadow-lg w-full max-w-4xl">
-        <h1 class="text-2xl font-bold text-gray-800 mb-6 text-center">Your Progress Journey</h1>
+      <h1 class="text-2xl font-bold text-gray-800 mb-6 text-center">
+        Your Progress Journey
+      </h1>
 
-        <div id="progressBar" class="progress-container flex items-center justify-between relative px-4 py-8">
-            <!-- Progress line will be dynamically inserted here -->
-            <div class="progress-line">
-                <div class="progress-line-fill" id="progressLineFill"></div>
-            </div>
-            <!-- Stages will be dynamically inserted here by JavaScript -->
+      <div
+        id="progressBar"
+        class="progress-container flex items-center justify-between relative px-4 py-8"
+      >
+        <!-- Progress line will be dynamically inserted here -->
+        <div class="progress-line">
+          <div class="progress-line-fill" id="progressLineFill"></div>
         </div>
+        <!-- Stages will be dynamically inserted here by JavaScript -->
+      </div>
 
-        <!-- Previous and Next buttons removed as per request -->
+      <!-- Previous and Next buttons removed as per request -->
     </div>
 
     <script>
-        const totalStages = 7;
-        const progressBar = document.getElementById('progressBar');
-        const progressLineFill = document.getElementById('progressLineFill');
-        let currentStage = 1; // Default starting stage
-        let autoProgressInterval; // Variable to hold the interval ID
+      const savedStage = localStorage.getItem("progressBarStage") || 1;
+      const totalStages = 7;
+      const progressBar = document.getElementById("progressBar");
+      const progressLineFill = document.getElementById("progressLineFill");
+      let currentStage = 1; // Default starting stage
+      let autoProgressInterval; // Variable to hold the interval ID
 
-        // Function to create a single stage element
-        function createStageElement(stageNumber, isGoal = false, savedStage) {
-          console.log(stageNumber, savedStage)
-            const stageDiv = document.createElement('div');
-            stageDiv.className = 'progress-stage flex-1 flex flex-col items-center relative';
+      // Function to create a single stage element
+      function createStageElement(stageNumber, isGoal = false, savedStage) {
+        console.log(stageNumber, savedStage);
+        const stageDiv = document.createElement("div");
+        stageDiv.className =
+          "progress-stage flex-1 flex flex-col items-center relative";
 
-            // Content wrapper for circle and label
-            const stageContent = document.createElement('div');
-            stageContent.className = 'stage-content flex flex-col items-center';
+        // Content wrapper for circle and label
+        const stageContent = document.createElement("div");
+        stageContent.className = "stage-content flex flex-col items-center";
 
-            const circle = document.createElement('div');
-            circle.className = stageNumber < savedStage ? 'stage-circle completed' : "stage-circle";
-            circle.textContent = stageNumber;
-            stageContent.appendChild(circle);
+        const circle = document.createElement("div");
+        circle.className =
+          stageNumber < savedStage ? "stage-circle completed" : "stage-circle";
+        circle.textContent = stageNumber;
+        stageContent.appendChild(circle);
 
-            const label = document.createElement('span');
-            label.className = 'stage-label mt-2 text-gray-600';
-            label.textContent = isGoal ? 'Goal' : `Stage ${stageNumber}`;
-            stageContent.appendChild(label);
+        const label = document.createElement("span");
+        label.className = "stage-label mt-2 text-gray-600";
+        label.textContent = isGoal ? "Goal" : `Stage ${stageNumber}`;
+        stageContent.appendChild(label);
 
-            stageDiv.appendChild(stageContent);
-            return stageDiv;
+        stageDiv.appendChild(stageContent);
+        return stageDiv;
+      }
+
+      // Function to render all stages
+      function renderStages() {
+        const savedStage = localStorage.getItem("progressBarStage");
+        // Clear existing stages (useful for re-rendering on resize if needed, though not strictly necessary with current setup)
+        while (progressBar.children.length > 1) {
+          // Keep the progress line div
+          progressBar.removeChild(progressBar.lastChild);
         }
 
-        // Function to render all stages
-        function renderStages() {
-          const savedStage = localStorage.getItem('progressBarStage');
-            // Clear existing stages (useful for re-rendering on resize if needed, though not strictly necessary with current setup)
-            while (progressBar.children.length > 1) { // Keep the progress line div
-                progressBar.removeChild(progressBar.lastChild);
-            }
+        for (let i = 1; i <= totalStages; i++) {
+          const isGoal = i === totalStages;
+          const stageElement = createStageElement(
+            i,
+            isGoal,
+            Number(savedStage)
+          );
+          progressBar.appendChild(stageElement);
+        }
+      }
 
-            for (let i = 1; i <= totalStages; i++) {
-                const isGoal = (i === totalStages);
-                const stageElement = createStageElement(i, isGoal, Number(savedStage));
-                progressBar.appendChild(stageElement);
-            }
+      // Function to update the progress bar visually and save progress
+      // disableTransition parameter controls whether the line fill should animate
+      function updateProgressBar(disableTransition = false) {
+        const stages = document.querySelectorAll(".progress-stage");
+        const isMobile = window.innerWidth <= 640;
+
+        stages.forEach((stageElement, index) => {
+          const stageNumber = index + 1;
+          const circle = stageElement.querySelector(".stage-circle");
+
+          // Reset classes
+          circle.classList.remove("completed", "active");
+
+          if (stageNumber < currentStage) {
+            circle.classList.add("completed");
+          } else if (stageNumber === currentStage) {
+            circle.classList.add("active");
+            circle.scrollIntoView({ behavior: "smooth" });
+          }
+        });
+
+        // Calculate progress line fill percentage
+        // If totalStages is 1, avoid division by zero; progress is 0.
+        const progress =
+          totalStages > 1 ? ((currentStage - 1) / (totalStages - 1)) * 100 : 0;
+
+        // Store original transition property
+        const originalTransition = progressLineFill.style.transition;
+
+        if (disableTransition) {
+          // Temporarily disable transition for immediate update
+          progressLineFill.style.transition = "none";
         }
 
-        // Function to update the progress bar visually and save progress
-        // disableTransition parameter controls whether the line fill should animate
-        function updateProgressBar(disableTransition = false) {
-            const stages = document.querySelectorAll('.progress-stage');
-            const isMobile = window.innerWidth <= 640;
-
-            stages.forEach((stageElement, index) => {
-                const stageNumber = index + 1;
-                const circle = stageElement.querySelector('.stage-circle');
-
-                // Reset classes
-                circle.classList.remove('completed', 'active');
-
-                if (stageNumber < currentStage) {
-                    circle.classList.add('completed');
-                } else if (stageNumber === currentStage) {
-                    circle.classList.add('active');
-                    circle.scrollIntoView({ behavior: "smooth" });
-                }
-            });
-
-            // Calculate progress line fill percentage
-            // If totalStages is 1, avoid division by zero; progress is 0.
-            const progress = totalStages > 1 ? (currentStage - 1) / (totalStages - 1) * 100 : 0;
-
-            // Store original transition property
-            const originalTransition = progressLineFill.style.transition;
-
-            if (disableTransition) {
-                // Temporarily disable transition for immediate update
-                progressLineFill.style.transition = 'none';
-            }
-
-            if (isMobile) {
-                progressLineFill.style.height = `${progress}%`;
-                progressLineFill.style.width = '100%'; // Ensure width is full for vertical line
-            } else {
-                progressLineFill.style.width = `${progress}%`;
-                progressLineFill.style.height = '100%'; // Ensure height is full for horizontal line
-            }
-
-            if (disableTransition) {
-                // Force a reflow to ensure the transition property is reset before the next paint
-                void progressLineFill.offsetWidth;
-                // Restore original transition after update
-                progressLineFill.style.transition = originalTransition;
-            }
-
-            // Save current stage to local storage
-            localStorage.setItem('progressBarStage', currentStage);
+        if (isMobile) {
+          progressLineFill.style.height = `${progress}%`;
+          progressLineFill.style.width = "100%"; // Ensure width is full for vertical line
+        } else {
+          progressLineFill.style.width = `${progress}%`;
+          progressLineFill.style.height = "100%"; // Ensure height is full for horizontal line
         }
 
-        // Function to start the automatic progression
-        function startAutoProgress() {
-            // Clear any existing interval to prevent multiple intervals running
-            // if (autoProgressInterval) {
-            //     clearInterval(autoProgressInterval);
-            // }
-
-            // // Set an interval to advance the stage every 3 seconds (to match visual transition)
-            // autoProgressInterval = setInterval(() => {
-                if (currentStage < totalStages) {
-                    currentStage++;
-                    updateProgressBar(); // Call updateProgressBar without disabling transition
-                } else {
-                    // Stop the interval when the last stage is reached
-                    clearInterval(autoProgressInterval);
-                }
-            // }, 3000); // 3000 milliseconds = 3 seconds per stage
+        if (disableTransition) {
+          // Force a reflow to ensure the transition property is reset before the next paint
+          void progressLineFill.offsetWidth;
+          // Restore original transition after update
+          progressLineFill.style.transition = originalTransition;
         }
 
-        // Initialize on window load
-        window.onload = () => {
-            // Load current stage from local storage, defaulting to 1 if not found
-            const savedStage = localStorage.getItem('progressBarStage');
-            if (savedStage) {
-                currentStage = parseInt(savedStage, 10);
-                // Ensure the loaded stage is within valid bounds
-                if (currentStage < 1) currentStage = 1;
-                if (currentStage > totalStages) currentStage = totalStages;
-            }
+        // Save current stage to local storage
+        localStorage.setItem("progressBarStage", currentStage);
+      }
 
-            renderStages(); // Create the HTML for stages
+      // Function to start the automatic progression
+      function startAutoProgress() {
+        // Clear any existing interval to prevent multiple intervals running
+        // if (autoProgressInterval) {
+        //     clearInterval(autoProgressInterval);
+        // }
 
-            // Initial update of the progress bar, disabling transition for immediate state
-            updateProgressBar(true);
+        // // Set an interval to advance the stage every 3 seconds (to match visual transition)
+        // autoProgressInterval = setInterval(() => {
+        if (currentStage < totalStages) {
+          currentStage++;
+          updateProgressBar(); // Call updateProgressBar without disabling transition
+        } else {
+          // Stop the interval when the last stage is reached
+          clearInterval(autoProgressInterval);
+        }
+        // }, 3000); // 3000 milliseconds = 3 seconds per stage
+      }
 
-            startAutoProgress(); // Start the automatic progression after initial setup
+      // Initialize on window load
+      window.onload = () => {
+        // Load current stage from local storage, defaulting to 1 if not found
 
-            // Listen for resize to adjust progress line orientation and visual state
-            window.addEventListener('resize', () => {
-                // When resizing, we also want the progress line to immediately adjust without transition
-                updateProgressBar(true);
-            });
-        };
+        if (savedStage) {
+          currentStage = parseInt(savedStage, 10);
+          // Ensure the loaded stage is within valid bounds
+          if (currentStage < 1) currentStage = 1;
+          if (currentStage > totalStages) currentStage = totalStages;
+        }
+
+        renderStages(); // Create the HTML for stages
+
+        // Initial update of the progress bar, disabling transition for immediate state
+        updateProgressBar(true);
+
+        startAutoProgress(); // Start the automatic progression after initial setup
+
+        // Listen for resize to adjust progress line orientation and visual state
+        window.addEventListener("resize", () => {
+          // When resizing, we also want the progress line to immediately adjust without transition
+          updateProgressBar(true);
+        });
+      };
+
+      setTimeout(() => {
+        const nextDestination =
+          Number(savedStage) == 1 ? Number(savedStage) + 1 : Number(savedStage);
+        location.href = PROGRESS_DATA[nextDestination];
+      }, 4000);
     </script>
-</body>
+    <script src="/data/progress-data.js"></script>
+  </body>
 </html>
